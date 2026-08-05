@@ -280,7 +280,7 @@
     const URL_KEY = "UrLk3yGetSet01";
 
     // यह ENC_DATA_ORIGIN डिक्रिप्ट होकर बनेगा: https://yoursomahearts.com/api/data.php
-    const ENC_DATA_ORIGIN = "U2FsdGVkX19SMIrmXtWp59bMoqc6JmmOgjmCZAXmbxbzIlkkWiGnJno8UobJh4YZwq83mTIJFyPeYWExNkAK5w==";
+    const ENC_DATA_ORIGIN = "U2FsdGVkX19+PzDClXbv1196d37y2lkfB2nLPJVAcA8gs33bWLOw6KsjxVLTY+Xrub78TPWMVHy/dj8uVeLbmw==";
 
     let lastUrl = null;
     const DATA_ORIGIN = CryptoJS.AES.decrypt(ENC_DATA_ORIGIN, URL_KEY).toString(CryptoJS.enc.Utf8);
